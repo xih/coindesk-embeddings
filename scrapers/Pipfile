@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+sqlalchemy = "*"
+pandas = "*"
+openai = "*"
+psycopg2-binary = "*"
+python-dotenv = "*"
+tqdm = "*"
+playwright = "*"
+beautifulsoup4 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

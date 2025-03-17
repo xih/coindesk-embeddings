@@ -12,6 +12,9 @@ python-dotenv = "*"
 tqdm = "*"
 playwright = "*"
 beautifulsoup4 = "*"
+scikit-learn = "*"
+matplotlib = "*"
+seaborn = "*"
 
 [dev-packages]
 

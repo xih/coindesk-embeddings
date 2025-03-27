@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+langchain = "*"
+langchain-openai = "*"
+langchain-community = "*"
+openai = "*"
+faiss-cpu = "*"
+numpy = "*"
+pandas = "*"
+sqlalchemy = "*"
+textblob = "*"
+scikit-learn = "*"
+spacy = "*"
+tenacity = "*"
+matplotlib = "*"
+seaborn = "*"
+httpx = "*"
+
+[dev-packages]
+pytest = "*"
+black = "*"
+flake8 = "*"
+
+[requires]
+python_version = "3.9"

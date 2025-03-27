@@ -1,0 +1,16 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+.env
+.env.local
+.venv
+venv
+node_modules
+.vercel
+*.png
+Pipfile*
+*.log
+.pytest_cache
+.coverage
+htmlcov/ 

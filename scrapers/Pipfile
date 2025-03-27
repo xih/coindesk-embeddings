@@ -15,6 +15,15 @@ beautifulsoup4 = "*"
 scikit-learn = "*"
 matplotlib = "*"
 seaborn = "*"
+langchain = "*"
+langchain-openai = "*"
+tenacity = "*"
+faiss-cpu = "*"
+pydantic = "*"
+langchain-community = "*"
+textblob = "*"
+numpy = "*"
+spacy = "*"
 
 [dev-packages]
 

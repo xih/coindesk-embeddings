@@ -38,7 +38,7 @@ class RAGSystem:
             # SQL query to get articles and their embeddings
             sql = text("""
                 SELECT a.id, a.title, a.content, a.category, a.date,
-                       e.vector_json
+                       e.vector_array
                 FROM articles a
                 JOIN embeddings e ON a.id = e.article_id
                 WHERE e.embedding_type = :embedding_type
@@ -50,7 +50,7 @@ class RAGSystem:
             # Calculate similarities and store results
             similarities = []
             for row in results:
-                vector = np.array(json.loads(row.vector_json))
+                vector = np.array(row.vector_array)
                 similarity = np.dot(query_vector, vector) / (
                     np.linalg.norm(query_vector) * np.linalg.norm(vector)
                 )
@@ -126,18 +126,16 @@ class RAGSystem:
 # Only run this when the file is executed directly, not when imported
 if __name__ == "__main__":
     # Initialize database connection
-    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                           "coindesk_embeddings.db")
-    print(f"Using database at: {db_path}")
-
-    if not os.path.exists(db_path):
-        print(f"Error: Database file not found at {db_path}")
+    neon_postgres_url = os.getenv("NEON_POSTGRES_URL")
+    if not neon_postgres_url:
+        print("Error: NEON_POSTGRES_URL environment variable not set")
+        print("Please set it in a .env file or export it in your shell")
         exit(1)
 
-    sqlite_engine = create_engine(f"sqlite:///{db_path}")
+    engine = create_engine(neon_postgres_url)
 
     # Check if database has been populated
-    Session = sessionmaker(bind=sqlite_engine)
+    Session = sessionmaker(bind=engine)
     session = Session()
 
     try:
@@ -151,7 +149,7 @@ if __name__ == "__main__":
         else:
             print(f"Found {article_count} articles in the database.")
             # Usage example
-            rag = RAGSystem(sqlite_engine)
+            rag = RAGSystem(engine)
             response = rag.generate_response(
                 "What are the latest developments in Bitcoin ETFs?")
             print("\nResponse:")

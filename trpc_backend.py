@@ -58,20 +58,17 @@ try:
 
     # Initialize database connection
     logger.info("Initializing database connection...")
-    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                           "scrapers", "coindesk_embeddings.db")
-    logger.info(f"Database path: {db_path}")
+    neon_postgres_url = os.getenv("NEON_POSTGRES_URL")
+    if not neon_postgres_url:
+        logger.error("NEON_POSTGRES_URL environment variable not set")
+        raise ValueError("NEON_POSTGRES_URL environment variable not set")
 
-    if not os.path.exists(db_path):
-        logger.error(f"Database file not found at {db_path}")
-        raise FileNotFoundError(f"Database file not found at {db_path}")
-
-    sqlite_engine = create_engine(f"sqlite:///{db_path}")
+    engine = create_engine(neon_postgres_url)
     logger.info("Database connection established")
 
     # Initialize RAG system
     logger.info("Initializing RAG system...")
-    rag = RAGSystem(sqlite_engine)
+    rag = RAGSystem(engine)
     logger.info("RAG system initialized")
 
     class QueryRequest(BaseModel):
@@ -142,7 +139,7 @@ try:
             from scrapers.generate_embeddings import Article
             from sqlalchemy.orm import sessionmaker
 
-            Session = sessionmaker(bind=sqlite_engine)
+            Session = sessionmaker(bind=engine)
             session = Session()
 
             try:
@@ -154,7 +151,8 @@ try:
                     "database": {
                         "connected": True,
                         "article_count": article_count,
-                        "path": db_path
+                        "type": "postgres",
+                        "url": "neon"
                     },
                     "timestamp": datetime.utcnow().isoformat()
                 }
@@ -169,7 +167,8 @@ try:
                 "error": str(e),
                 "database": {
                     "connected": False,
-                    "path": db_path
+                    "type": "postgres",
+                    "url": "neon"
                 },
                 "timestamp": datetime.utcnow().isoformat()
             }

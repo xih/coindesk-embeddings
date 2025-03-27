@@ -4,6 +4,8 @@ services:
     runtime: docker
     region: oregon
     plan: free
+    buildCommand: ""
+    startCommand: ""
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0

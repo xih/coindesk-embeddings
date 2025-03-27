@@ -4,6 +4,9 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     dockerContext: .
+    plan: free
+    instance_type: basic
+    size: free
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
@@ -15,7 +18,3 @@ services:
         value: 60
     healthCheckPath: /trpc/health
     autoDeploy: true
-    disk:
-      name: sqlite-data
-      mountPath: /data
-      sizeGB: 1
